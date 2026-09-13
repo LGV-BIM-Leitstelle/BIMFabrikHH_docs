@@ -1,0 +1,25 @@
+[project]
+name = "bimfabrikhh-docs"
+version = "0.1.0"
+description = "Unified documentation for BIMFabrikHH, ifcfactory, and BIMFabrikHH API."
+authors = [
+    { name = "Ahmed Salem", email = "ahmed.salem@gv.hamburg.de" },
+]
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "zensical>=0.0.28",
+    "mkdocstrings-python>=1.10.0",
+]
+
+[tool.poetry]
+package-mode = false
+
+# Editable ifcfactory for mkdocstrings (sibling checkout: __GitHubProjects/ifcfactory).
+# Install: poetry install --with ifcfactory
+[tool.poetry.group.ifcfactory.dependencies]
+ifcfactory = { path = "../ifcfactory", develop = true }
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

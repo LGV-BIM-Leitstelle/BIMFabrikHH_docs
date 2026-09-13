@@ -1,0 +1,3 @@
+# `ifcfactory.primitives`
+
+::: ifcfactory.primitives

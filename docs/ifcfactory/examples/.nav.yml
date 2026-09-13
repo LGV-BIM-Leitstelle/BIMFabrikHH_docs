@@ -1,0 +1,8 @@
+title: Examples
+sort:
+  direction: asc
+  type: natural
+  by: filename
+nav:
+  - Overview: index.md
+  - "*"

@@ -1,0 +1,7 @@
+nav:
+  - Home: index.md
+  - ifcfactory
+
+ignore:
+  - assets
+  - stylesheets

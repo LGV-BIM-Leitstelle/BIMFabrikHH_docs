@@ -1,0 +1,3 @@
+# `ifcfactory.operations`
+
+::: ifcfactory.operations

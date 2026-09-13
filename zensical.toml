@@ -1,0 +1,55 @@
+[project]
+site_name = "BIMFabrikHH documentation"
+site_description = "Documentation for BIMFabrikHH Core, BIMFabrikHH API, and ifcfactory."
+site_author = "Ahmed Salem"
+site_url = "https://lgv-bim-leitstelle.github.io/BIMFabrikHH_docs/"
+
+docs_dir = "docs"
+site_dir = "site"
+extra_css = ["stylesheets/extra.css"]
+
+# Tab icon: Hamburg (from bim-portal-hh-bimfabrik). BIMFabrik logo lives on the page, not in the header.
+# https://zensical.org/docs/setup/logo-and-icons/
+[project.theme]
+favicon = "assets/images/favicon.ico"
+features = [
+    "navigation.tabs",
+    "navigation.tabs.sticky",
+    "navigation.indexes",
+]
+
+# Syntax highlighting for ```python``` etc. + snippets inside examples.
+# https://zensical.org/docs/authoring/code-blocks/
+[project.markdown_extensions.pymdownx.highlight]
+anchor_linenums = true
+line_spans = "__span"
+pygments_lang_class = true
+
+[project.markdown_extensions.pymdownx.inlinehilite]
+
+# Include sibling ifcfactory/README.md and examples/*.py (see docs/ifcfactory/*).
+# https://facelessuser.github.io/pymdown-extensions/extensions/snippets/
+[project.markdown_extensions.pymdownx.snippets]
+base_path = [".."]
+check_paths = true
+dedent_subsections = true
+
+[project.markdown_extensions.pymdownx.superfences]
+
+# Navigation from docs/**/.nav.yml (not a hand-written nav list here).
+# https://zensical.org/docs/compatibility/mkdocs/plugins/#awesome-nav
+[project.plugins.awesome-nav]
+
+# API docs from Python: https://zensical.org/docs/setup/extensions/mkdocstrings/
+# `paths`: repo root that contains the `ifcfactory` package folder (sibling clone).
+[project.plugins.mkdocstrings.handlers.python]
+inventories = ["https://docs.python.org/3/objects.inv"]
+paths = ["../ifcfactory"]
+
+[project.plugins.mkdocstrings.handlers.python.options]
+docstring_style = "google"
+inherited_members = true
+show_source = true
+show_root_heading = true
+show_symbol_type_heading = true
+show_symbol_type_toc = true

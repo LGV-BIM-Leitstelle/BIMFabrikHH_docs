@@ -1,0 +1,154 @@
+/* Homepage brand mark: full content width, not the header logo. */
+.bimfabrik-hero {
+  margin: 0 0 1.5rem;
+  text-align: center;
+}
+
+.bimfabrik-hero img {
+  display: block;
+  width: 50%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Wider primary (left) nav and secondary (right) TOC — only width; leave theme flex/height as default. */
+:root {
+  --bimfabrikhh-docs-sidebar-width: 20rem;
+  /* Theme TOC column is ~15.3rem at xl; bump for longer headings. */
+  --bimfabrikhh-docs-sidebar-secondary-width: 16rem;
+}
+
+@media screen and (min-width: 76.25em) {
+  /*
+   * Theme default: .md-main__inner.md-grid has a modest max-width and is centered,
+   * so a wider sidebar steals width from the article while empty margin stays on the left.
+   * Let the row use the full content width so the middle column keeps space.
+   */
+  .md-main__inner.md-grid {
+    max-width: 100%;
+  }
+
+  .md-sidebar--primary {
+    width: var(--bimfabrikhh-docs-sidebar-width);
+    flex: 0 0 var(--bimfabrikhh-docs-sidebar-width);
+    max-width: var(--bimfabrikhh-docs-sidebar-width);
+  }
+
+  .md-sidebar--primary .md-sidebar__inner {
+    width: var(--bimfabrikhh-docs-sidebar-width);
+  }
+
+  /*
+   * Material (WebKit): theme uses padding-inline-end: calc(100% - 230px) to reserve
+   * scrollbar space on the inline-end side. We reapply the same width math on
+   * inline-start so the gutter sits on the left (LTR).
+   */
+  @supports selector(::-webkit-scrollbar) {
+    .md-sidebar--primary .md-sidebar__inner {
+      padding-inline-end: 0;
+      padding-inline-start: calc(
+        100% - (var(--bimfabrikhh-docs-sidebar-width) - 0.75rem)
+      );
+    }
+  }
+
+  .md-sidebar--secondary {
+    width: var(--bimfabrikhh-docs-sidebar-secondary-width);
+    flex: 0 0 var(--bimfabrikhh-docs-sidebar-secondary-width);
+    max-width: var(--bimfabrikhh-docs-sidebar-secondary-width);
+    /* Flex default min-width:auto lets long TOC text widen the column → horizontal scroll. */
+    min-width: 0;
+    /* Do not set overflow on the sidebar itself — same as primary; it breaks Material’s
+       height:0 + sticky layout and clips/scrolls the column vertically the wrong way. */
+  }
+
+  .md-sidebar--secondary .md-sidebar__inner {
+    width: var(--bimfabrikhh-docs-sidebar-secondary-width);
+  }
+
+  /* Same WebKit scrollbar gutter as theme (.md-sidebar__inner), width-scaled. */
+  @supports selector(::-webkit-scrollbar) {
+    .md-sidebar--secondary .md-sidebar__inner {
+      padding-inline-end: calc(
+        100% - (var(--bimfabrikhh-docs-sidebar-secondary-width) - 0.75rem)
+      );
+    }
+  }
+}
+
+/* Long labels: wrap instead of one-line ellipsis (avoids horizontal scroll). */
+.md-sidebar--primary .md-sidebar__scrollwrap,
+.md-sidebar--secondary .md-sidebar__scrollwrap {
+  overflow-x: hidden;
+}
+
+.md-sidebar--primary .md-ellipsis {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Right TOC: wrap long headings (same idea as primary nav). */
+
+.md-sidebar--secondary .md-ellipsis {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.md-sidebar--secondary .md-nav__link {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/*
+ * Code fences — Pygments token colors via --md-code-hl-*.
+ *
+ * Zensical’s modern theme (default) sets those variables again on the node that carries
+ * data-md-color-scheme (light: "default", dark: "slate"). Overrides on :root > * / body
+ * sit *above* that node, so code blocks still saw the theme defaults — your edits looked
+ * like they did nothing. Classic Material often uses "dark" for night mode; we include both.
+ *
+ * https://zensical.org/docs/authoring/code-blocks/#custom-syntax-theme
+ * https://squidfunk.github.io/mkdocs-material/reference/code-blocks/#custom-syntax-theme
+ */
+[data-md-color-scheme="default"] {
+  --bimfabrikhh-code-class-color: hsl(188 62% 30%);
+  --bimfabrikhh-code-func-color: hsl(222 78% 38%);
+  --md-code-hl-keyword-color: hsl(286 58% 38%);
+  --md-code-hl-string-color: hsl(145 45% 30%);
+  --md-code-hl-function-color: var(--bimfabrikhh-code-func-color);
+  --md-code-hl-number-color: hsl(32 90% 34%);
+  --md-code-hl-comment-color: hsl(220 12% 44%);
+  --md-code-hl-name-color: hsl(200 22% 22%);
+}
+
+[data-md-color-scheme="slate"],
+[data-md-color-scheme="dark"] {
+  --bimfabrikhh-code-class-color: hsl(188 48% 68%);
+  --bimfabrikhh-code-func-color: hsl(222 72% 70%);
+  --md-code-hl-keyword-color: hsl(286 55% 74%);
+  --md-code-hl-string-color: hsl(145 42% 62%);
+  --md-code-hl-function-color: var(--bimfabrikhh-code-func-color);
+  --md-code-hl-number-color: hsl(32 85% 64%);
+  --md-code-hl-comment-color: hsl(220 14% 58%);
+  --md-code-hl-name-color: hsl(200 18% 86%);
+}
+
+/*
+ * Material maps .nc and .nf to the same variable; split class vs function/magic.
+ * Python often labels many identifiers as .n only — those keep --md-code-hl-name-color.
+ * Ref: mkdocs-material …/pymdownx/_highlight.scss (:is(.nc, .ne, .nf, .nn))
+ */
+.md-typeset .highlight .nc {
+  color: var(--bimfabrikhh-code-class-color);
+}
+
+.md-typeset .highlight :is(.nf, .fm) {
+  color: var(--bimfabrikhh-code-func-color);
+}

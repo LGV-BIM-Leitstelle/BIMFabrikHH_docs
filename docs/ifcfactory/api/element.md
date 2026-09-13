@@ -1,0 +1,3 @@
+# `ifcfactory.element`
+
+::: ifcfactory.element
